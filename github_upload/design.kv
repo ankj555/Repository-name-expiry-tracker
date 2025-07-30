@@ -1,0 +1,1020 @@
+#:kivy 2.0.0
+#:import Factory kivy.factory.Factory
+
+# 全局样式定义
+<Label>:
+    font_name: 'Chinese'
+    color: 0.2, 0.2, 0.2, 1
+
+<Button>:
+    font_name: 'Chinese'
+    background_normal: ''
+    background_down: ''
+    size_hint_min_y: '48dp'
+    canvas.before:
+        Color:
+            rgba: self.background_color if hasattr(self, 'background_color') else (0.2, 0.6, 1, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+    canvas.after:
+        Color:
+            rgba: 0, 0, 0, 0.1
+        Line:
+            rounded_rectangle: [self.pos[0], self.pos[1], self.size[0], self.size[1], 15]
+            width: 1
+
+<TextInput>:
+    font_name: 'Chinese'
+    background_normal: ''
+    background_active: ''
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
+        Color:
+            rgba: 0.8, 0.8, 0.8, 1
+        Line:
+            rounded_rectangle: [self.pos[0], self.pos[1], self.size[0], self.size[1], 10]
+            width: 1
+
+# 自定义卡片组件
+<Card@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15,]
+        Color:
+            rgba: 0, 0, 0, 0.1
+        RoundedRectangle:
+            pos: self.x + 2, self.y - 2
+            size: self.width, self.height
+            radius: [15,]
+    padding: '15dp'
+    spacing: '10dp'
+
+# 主界面
+<HomeScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.97, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+        spacing: '20dp'
+        
+        # 顶部标题区域
+        Card:
+            size_hint_y: None
+            height: '120dp'
+            orientation: 'vertical'
+            
+            Label:
+                text: '智能条码扫描器'
+                font_size: '28sp'
+                bold: True
+                color: 0.2, 0.6, 1, 1
+                size_hint_y: None
+                height: '40dp'
+            
+            Label:
+                text: '产品保质期管理系统'
+                font_size: '16sp'
+                color: 0.5, 0.5, 0.5, 1
+                size_hint_y: None
+                height: '30dp'
+            
+            # 统计信息
+            BoxLayout:
+                size_hint_y: None
+                height: '30dp'
+                spacing: '20dp'
+                
+                Label:
+                    id: total_products
+                    text: '总产品: 0'
+                    font_size: '14sp'
+                    color: 0.3, 0.3, 0.3, 1
+                
+                Label:
+                    id: expiring_soon
+                    text: '即将过期: 0'
+                    font_size: '14sp'
+                    color: 1, 0.5, 0, 1
+        
+        # 功能按钮区域
+        GridLayout:
+            cols: 2
+            spacing: '15dp'
+            size_hint_y: None
+            height: '300dp'
+            
+            Card:
+                orientation: 'vertical'
+                
+                Widget:
+                    size_hint_y: 0.3
+                
+                Label:
+                    text: '📱'
+                    font_size: '40sp'
+                    size_hint_y: None
+                    height: '60dp'
+                
+                Button:
+                    text: '扫描条码'
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: '50dp'
+                    background_color: 0.2, 0.6, 1, 1
+                    on_release: root.manager.current = 'scan'
+                
+                Widget:
+                    size_hint_y: 0.3
+            
+            Card:
+                orientation: 'vertical'
+                
+                Widget:
+                    size_hint_y: 0.3
+                
+                Label:
+                    text: '📋'
+                    font_size: '40sp'
+                    size_hint_y: None
+                    height: '60dp'
+                
+                Button:
+                    text: '产品列表'
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: '50dp'
+                    background_color: 0.2, 0.8, 0.2, 1
+                    on_release: root.manager.current = 'product_list'
+                
+                Widget:
+                    size_hint_y: 0.3
+            
+            Card:
+                orientation: 'vertical'
+                
+                Widget:
+                    size_hint_y: 0.3
+                
+                Label:
+                    text: '➕'
+                    font_size: '40sp'
+                    size_hint_y: None
+                    height: '60dp'
+                
+                Button:
+                    text: '添加产品'
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: '50dp'
+                    background_color: 0.8, 0.4, 1, 1
+                    on_release: root.manager.current = 'add_product'
+                
+                Widget:
+                    size_hint_y: 0.3
+            
+            Card:
+                orientation: 'vertical'
+                
+                Widget:
+                    size_hint_y: 0.3
+                
+                Label:
+                    text: '⚙️'
+                    font_size: '40sp'
+                    size_hint_y: None
+                    height: '60dp'
+                
+                Button:
+                    text: '设置'
+                    font_size: '18sp'
+                    size_hint_y: None
+                    height: '50dp'
+                    background_color: 0.8, 0.6, 0.2, 1
+                    on_release: root.manager.current = 'settings'
+                
+                Widget:
+                    size_hint_y: 0.3
+        
+        Widget:
+
+# 扫描界面
+<ScanScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.97, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+        
+        # 顶部导航
+        BoxLayout:
+            size_hint_y: None
+            height: '60dp'
+            spacing: '10dp'
+            
+            Button:
+                text: '← 返回'
+                size_hint_x: None
+                width: '100dp'
+                background_color: 0.6, 0.6, 0.6, 1
+                on_release: root.manager.current = 'home'
+            
+            Label:
+                text: '扫描条码和日期'
+                font_size: '20sp'
+                bold: True
+                color: 0.2, 0.6, 1, 1
+        
+        # 相机预览区域
+        Card:
+            id: camera_preview
+            size_hint_y: 0.4
+            
+            Label:
+                text: '相机预览区域\n点击开始扫描'
+                font_size: '16sp'
+                color: 0.5, 0.5, 0.5, 1
+                halign: 'center'
+        
+        # 扫描结果区域
+        Card:
+            orientation: 'vertical'
+            size_hint_y: 0.6
+            
+            Label:
+                text: '扫描结果'
+                font_size: '18sp'
+                bold: True
+                size_hint_y: None
+                height: '40dp'
+                color: 0.2, 0.6, 1, 1
+            
+            GridLayout:
+                cols: 2
+                spacing: '10dp'
+                size_hint_y: None
+                height: self.minimum_height
+                
+                Label:
+                    text: '产品名称:'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                
+                Label:
+                    id: product_name
+                    text: '未识别'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'left'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                    color: 0.2, 0.6, 1, 1
+                
+                Label:
+                    text: '条码:'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                
+                Label:
+                    id: product_code
+                    text: '未扫描'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'left'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                    color: 0.2, 0.6, 1, 1
+                
+                Label:
+                    text: '生产日期:'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                
+                Label:
+                    id: production_date
+                    text: '未识别'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'left'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                    color: 0.2, 0.6, 1, 1
+                
+                Label:
+                    text: '过期日期:'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                
+                Label:
+                    id: expiry_date
+                    text: '未计算'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'left'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                    color: 0.2, 0.6, 1, 1
+                
+                Label:
+                    text: '剩余天数:'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                
+                Label:
+                    id: days_remaining
+                    text: '未计算'
+                    size_hint_y: None
+                    height: '35dp'
+                    halign: 'left'
+                    text_size: self.width, None
+                    font_size: '14sp'
+                    color: 0.2, 0.6, 1, 1
+            
+            Label:
+                id: error_label
+                text: ''
+                color: 1, 0, 0, 1
+                size_hint_y: None
+                height: '30dp'
+            
+            # 手动输入区域
+            BoxLayout:
+                id: manual_date_input
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: '50dp'
+                spacing: '10dp'
+                opacity: 0
+                
+                TextInput:
+                    id: manual_date
+                    hint_text: 'YYYY-MM-DD'
+                    multiline: False
+                    size_hint_x: 0.7
+                
+                Button:
+                    text: '确认'
+                    size_hint_x: 0.3
+                    background_color: 0.2, 0.8, 0.2, 1
+                    on_release: root.on_date_recognized(manual_date.text)
+            
+            # 操作按钮
+            BoxLayout:
+                size_hint_y: None
+                height: '60dp'
+                spacing: '10dp'
+                
+                Button:
+                    text: '手动输入日期'
+                    background_color: 0.8, 0.6, 0.2, 1
+                    on_release: manual_date_input.opacity = 1 if manual_date_input.opacity == 0 else 0
+                
+                Button:
+                    text: '保存记录'
+                    background_color: 0.2, 0.8, 0.2, 1
+                    disabled: not (product_name.text != '未识别' and production_date.text != '未识别')
+                    on_release: root.save_product_record()
+
+# 产品列表界面
+<ProductListScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.97, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+        
+        # 顶部导航和搜索
+        BoxLayout:
+            size_hint_y: None
+            height: '60dp'
+            spacing: '10dp'
+            
+            Button:
+                text: '← 返回'
+                size_hint_x: None
+                width: '100dp'
+                background_color: 0.6, 0.6, 0.6, 1
+                on_release: root.manager.current = 'home'
+            
+            Label:
+                text: '产品列表'
+                font_size: '20sp'
+                bold: True
+                color: 0.2, 0.6, 1, 1
+        
+        # 筛选和排序
+        Card:
+            size_hint_y: None
+            height: '80dp'
+            orientation: 'horizontal'
+            
+            Label:
+                text: '排序:'
+                size_hint_x: None
+                width: '60dp'
+                font_size: '14sp'
+            
+            Spinner:
+                id: sort_spinner
+                text: '剩余天数'
+                values: ['剩余天数', '产品名称', '过期日期', '添加时间']
+                size_hint_x: 0.3
+                font_size: '14sp'
+                on_text: root.refresh_product_list(self.text)
+            
+            Widget:
+                size_hint_x: 0.05
+            
+            Button:
+                text: '🔄 刷新'
+                size_hint_x: None
+                width: '80dp'
+                background_color: 0.2, 0.6, 1, 1
+                font_size: '12sp'
+                on_release: root.refresh_product_list()
+        
+        # 导入导出功能
+        Card:
+            size_hint_y: None
+            height: '60dp'
+            orientation: 'horizontal'
+            
+            Button:
+                text: '📤 导出表格'
+                size_hint_x: 0.5
+                background_color: 0.2, 0.8, 0.4, 1
+                font_size: '14sp'
+                on_release: root.export_to_excel()
+            
+            Widget:
+                size_hint_x: 0.05
+            
+            Button:
+                text: '📥 导入表格'
+                size_hint_x: 0.5
+                background_color: 0.8, 0.4, 0.2, 1
+                font_size: '14sp'
+                on_release: root.import_from_excel()
+        
+        # 产品列表
+        ScrollView:
+            GridLayout:
+                id: product_list
+                cols: 1
+                spacing: '10dp'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: '5dp'
+
+# 产品列表项
+<ProductListItem>:
+    size_hint_y: None
+    height: '120dp'
+    
+    Card:
+        canvas.before:
+            Color:
+                rgba: (0.9, 1, 0.9, 1) if root.days_remaining > 30 else ((1, 0.95, 0.8, 1) if root.days_remaining > 7 else (1, 0.9, 0.9, 1))
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [15,]
+        
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: '5dp'
+            
+            # 产品名称
+            Label:
+                text: root.product_name
+                font_size: '16sp'
+                bold: True
+                halign: 'left'
+                valign: 'middle'
+                text_size: self.width, None
+                size_hint_y: None
+                height: '30dp'
+                color: 0.2, 0.2, 0.2, 1
+            
+            # 详细信息
+            BoxLayout:
+                size_hint_y: None
+                height: '50dp'
+                spacing: '10dp'
+                
+                BoxLayout:
+                    orientation: 'vertical'
+                    
+                    Label:
+                        text: f'条码: {root.barcode}'
+                        font_size: '12sp'
+                        halign: 'left'
+                        text_size: self.width, None
+                        color: 0.5, 0.5, 0.5, 1
+                    
+                    Label:
+                        text: f'生产: {root.production_date}'
+                        font_size: '12sp'
+                        halign: 'left'
+                        text_size: self.width, None
+                        color: 0.5, 0.5, 0.5, 1
+                    
+                    Label:
+                        text: f'过期: {root.expiry_date}'
+                        font_size: '12sp'
+                        halign: 'left'
+                        text_size: self.width, None
+                        color: 0.5, 0.5, 0.5, 1
+                
+                # 剩余天数显示
+                BoxLayout:
+                    size_hint_x: None
+                    width: '100dp'
+                    orientation: 'vertical'
+                    
+                    Label:
+                        text: '剩余天数'
+                        font_size: '12sp'
+                        color: 0.5, 0.5, 0.5, 1
+                    
+                    Label:
+                        text: f'{root.days_remaining}天'
+                        font_size: '18sp'
+                        bold: True
+                        color: (0, 0.7, 0, 1) if root.days_remaining > 30 else ((0.8, 0.5, 0, 1) if root.days_remaining > 7 else (0.8, 0, 0, 1))
+
+# 添加产品界面
+<AddProductScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.97, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+        
+        # 顶部导航
+        BoxLayout:
+            size_hint_y: None
+            height: '60dp'
+            spacing: '10dp'
+            
+            Button:
+                text: '← 返回'
+                size_hint_x: None
+                width: '100dp'
+                background_color: 0.6, 0.6, 0.6, 1
+                on_release: root.manager.current = 'scan'
+            
+            Label:
+                text: '添加新产品'
+                font_size: '20sp'
+                bold: True
+                color: 0.2, 0.6, 1, 1
+        
+        # 输入表单
+        Card:
+            orientation: 'vertical'
+            
+            GridLayout:
+                cols: 2
+                spacing: '15dp'
+                size_hint_y: None
+                height: self.minimum_height
+                
+                Label:
+                    text: '条码:'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: barcode_input
+                    multiline: False
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+                
+                Label:
+                    text: '产品名称:'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: name_input
+                    multiline: False
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+                
+                Label:
+                    text: '保质期(天):'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: shelf_life_input
+                    multiline: False
+                    input_filter: 'int'
+                    text: '365'
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+                
+                Label:
+                    text: '退货期限(天):'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: return_days_input
+                    multiline: False
+                    input_filter: 'int'
+                    text: '7'
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+            
+            Label:
+                id: error_label
+                text: ''
+                color: 1, 0, 0, 1
+                size_hint_y: None
+                height: '40dp'
+            
+            Button:
+                text: '💾 保存产品信息'
+                size_hint_y: None
+                height: '60dp'
+                font_size: '18sp'
+                background_color: 0.2, 0.8, 0.2, 1
+                on_release: root.add_product()
+        
+        Widget:
+
+# 设置界面
+<SettingsScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.97, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+        spacing: '10dp'
+        
+        # 顶部导航
+        BoxLayout:
+            size_hint_y: None
+            height: '60dp'
+            spacing: '10dp'
+            
+            Button:
+                text: '← 返回'
+                size_hint_x: None
+                width: '100dp'
+                background_color: 0.6, 0.6, 0.6, 1
+                on_release: root.manager.current = 'home'
+            
+            Label:
+                text: '系统设置'
+                font_size: '20sp'
+                bold: True
+                color: 0.2, 0.6, 1, 1
+        
+        # 设置选项
+        Card:
+            orientation: 'vertical'
+            
+            GridLayout:
+                cols: 2
+                spacing: '15dp'
+                size_hint_y: None
+                height: self.minimum_height
+                
+                Label:
+                    text: '默认退货期限(天):'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: default_return_days
+                    multiline: False
+                    input_filter: 'int'
+                    text: '7'
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+                
+                Label:
+                    text: '服务器地址:'
+                    size_hint_y: None
+                    height: '50dp'
+                    halign: 'right'
+                    text_size: self.width, None
+                    font_size: '16sp'
+                
+                TextInput:
+                    id: server_address
+                    multiline: False
+                    hint_text: 'http://192.168.1.100:8000'
+                    size_hint_y: None
+                    height: '50dp'
+                    font_size: '16sp'
+            
+            Label:
+                id: status_label
+                text: ''
+                size_hint_y: None
+                height: '40dp'
+                color: 0.2, 0.6, 1, 1
+            
+            BoxLayout:
+                size_hint_y: None
+                height: '70dp'
+                spacing: '10dp'
+                
+                Button:
+                    text: '💾 保存设置'
+                    background_color: 0.2, 0.6, 1, 1
+                    font_size: '16sp'
+                    on_release: root.save_settings()
+                
+                Button:
+                    text: '🔄 同步数据'
+                    background_color: 0.2, 0.8, 0.2, 1
+                    font_size: '16sp'
+                    on_release: root.sync_data()
+        
+        Widget:
+
+# 电脑端数据查看界面
+<DesktopViewScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.98, 0.98, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    
+    BoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+        spacing: '15dp'
+        
+        # 顶部标题和统计
+        Card:
+            size_hint_y: None
+            height: '100dp'
+            orientation: 'horizontal'
+            
+            BoxLayout:
+                orientation: 'vertical'
+                
+                Label:
+                    text: '产品数据管理中心'
+                    font_size: '24sp'
+                    bold: True
+                    color: 0.2, 0.6, 1, 1
+                    size_hint_y: None
+                    height: '40dp'
+                
+                BoxLayout:
+                    size_hint_y: None
+                    height: '40dp'
+                    spacing: '30dp'
+                    
+                    Label:
+                        id: desktop_total_products
+                        text: '总产品: 0'
+                        font_size: '16sp'
+                        color: 0.3, 0.3, 0.3, 1
+                    
+                    Label:
+                        id: desktop_expiring_soon
+                        text: '即将过期: 0'
+                        font_size: '16sp'
+                        color: 1, 0.5, 0, 1
+                    
+                    Label:
+                        id: desktop_expired
+                        text: '已过期: 0'
+                        font_size: '16sp'
+                        color: 1, 0, 0, 1
+            
+            BoxLayout:
+                size_hint_x: None
+                width: '200dp'
+                spacing: '10dp'
+                
+                Button:
+                    text: '📊 导出数据'
+                    background_color: 0.2, 0.6, 1, 1
+                    on_release: root.export_data()
+                
+                Button:
+                    text: '🔄 刷新'
+                    background_color: 0.2, 0.8, 0.2, 1
+                    on_release: root.refresh_data()
+        
+        # 筛选和搜索
+        Card:
+            size_hint_y: None
+            height: '80dp'
+            orientation: 'horizontal'
+            
+            TextInput:
+                id: search_input
+                hint_text: '搜索产品名称或条码...'
+                size_hint_x: 0.4
+                font_size: '16sp'
+                on_text: root.filter_products(self.text)
+            
+            Widget:
+                size_hint_x: 0.1
+            
+            Label:
+                text: '状态筛选:'
+                size_hint_x: None
+                width: '100dp'
+                font_size: '16sp'
+            
+            Spinner:
+                id: status_filter
+                text: '全部'
+                values: ['全部', '正常', '即将过期', '已过期']
+                size_hint_x: 0.2
+                font_size: '16sp'
+                on_text: root.filter_by_status(self.text)
+            
+            Widget:
+                size_hint_x: 0.1
+            
+            Label:
+                text: '排序:'
+                size_hint_x: None
+                width: '60dp'
+                font_size: '16sp'
+            
+            Spinner:
+                id: desktop_sort_spinner
+                text: '剩余天数'
+                values: ['剩余天数', '产品名称', '过期日期', '添加时间']
+                size_hint_x: 0.2
+                font_size: '16sp'
+                on_text: root.sort_products(self.text)
+        
+        # 数据表格
+        ScrollView:
+            GridLayout:
+                id: desktop_product_list
+                cols: 1
+                spacing: '5dp'
+                size_hint_y: None
+                height: self.minimum_height
+                padding: '5dp'
+
+# 电脑端产品列表项
+<DesktopProductItem>:
+    size_hint_y: None
+    height: '60dp'
+    
+    Card:
+        canvas.before:
+            Color:
+                rgba: (0.95, 1, 0.95, 1) if root.days_remaining > 30 else ((1, 0.98, 0.9, 1) if root.days_remaining > 7 else (1, 0.95, 0.95, 1))
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [8,]
+        
+        BoxLayout:
+            spacing: '15dp'
+            
+            # 产品名称
+            Label:
+                text: root.product_name
+                font_size: '14sp'
+                bold: True
+                halign: 'left'
+                text_size: self.width, None
+                size_hint_x: 0.25
+                color: 0.2, 0.2, 0.2, 1
+            
+            # 条码
+            Label:
+                text: root.barcode
+                font_size: '12sp'
+                halign: 'center'
+                text_size: self.width, None
+                size_hint_x: 0.2
+                color: 0.4, 0.4, 0.4, 1
+            
+            # 生产日期
+            Label:
+                text: root.production_date
+                font_size: '12sp'
+                halign: 'center'
+                text_size: self.width, None
+                size_hint_x: 0.15
+                color: 0.4, 0.4, 0.4, 1
+            
+            # 过期日期
+            Label:
+                text: root.expiry_date
+                font_size: '12sp'
+                halign: 'center'
+                text_size: self.width, None
+                size_hint_x: 0.15
+                color: 0.4, 0.4, 0.4, 1
+            
+            # 剩余天数
+            Label:
+                text: f'{root.days_remaining}天'
+                font_size: '14sp'
+                bold: True
+                halign: 'center'
+                text_size: self.width, None
+                size_hint_x: 0.1
+                color: (0, 0.7, 0, 1) if root.days_remaining > 30 else ((0.8, 0.5, 0, 1) if root.days_remaining > 7 else (0.8, 0, 0, 1))
+            
+            # 操作按钮
+            BoxLayout:
+                size_hint_x: 0.15
+                spacing: '5dp'
+                
+                Button:
+                    text: '编辑'
+                    font_size: '12sp'
+                    background_color: 0.2, 0.6, 1, 1
+                    on_release: root.edit_product()
+                
+                Button:
+                    text: '删除'
+                    font_size: '12sp'
+                    background_color: 1, 0.3, 0.3, 1
+                    on_release: root.delete_product()

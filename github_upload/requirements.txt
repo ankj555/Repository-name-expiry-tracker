@@ -1,0 +1,32 @@
+# 基础依赖
+kivy>=2.1.0
+kivymd>=1.1.1
+python-dateutil>=2.8.2
+requests>=2.28.1
+
+# 条码扫描依赖
+pyzbar>=0.1.9
+opencv-python>=4.6.0
+
+# OCR和图像处理依赖
+pytesseract>=0.3.10
+Pillow>=9.0.0
+numpy>=1.21.0
+easyocr>=1.6.0
+
+# 服务器依赖
+flask>=2.2.2
+Flask-CORS>=4.0.0
+
+# 数据处理
+pandas>=1.5.0
+scipy>=1.9.0
+openpyxl>=3.0.10
+
+# Android特定依赖（仅在构建Android应用时需要）
+# pyjnius
+# android
+
+# 打包工具
+buildozer==1.4.0  # 仅用于构建Android应用
+pyinstaller==5.6.2  # 用于构建Windows应用

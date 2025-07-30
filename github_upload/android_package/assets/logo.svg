@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <!-- 背景圆形 -->
+  <circle cx="100" cy="100" r="90" fill="#2980b9" />
+  
+  <!-- 内部白色圆形 -->
+  <circle cx="100" cy="100" r="50" fill="white" />
+  
+  <!-- 文字 -->
+  <text x="100" y="110" font-family="Arial" font-size="36" font-weight="bold" fill="#2980b9" text-anchor="middle">ET</text>
+  
+  <!-- 条码图案 -->
+  <g transform="translate(70, 130)" fill="white">
+    <rect x="0" y="0" width="2" height="20" />
+    <rect x="4" y="0" width="1" height="20" />
+    <rect x="7" y="0" width="3" height="20" />
+    <rect x="12" y="0" width="2" height="20" />
+    <rect x="16" y="0" width="1" height="20" />
+    <rect x="19" y="0" width="3" height="20" />
+    <rect x="24" y="0" width="2" height="20" />
+    <rect x="28" y="0" width="1" height="20" />
+    <rect x="31" y="0" width="3" height="20" />
+    <rect x="36" y="0" width="2" height="20" />
+    <rect x="40" y="0" width="1" height="20" />
+    <rect x="43" y="0" width="3" height="20" />
+    <rect x="48" y="0" width="2" height="20" />
+    <rect x="52" y="0" width="1" height="20" />
+    <rect x="55" y="0" width="3" height="20" />
+    <rect x="60" y="0" width="2" height="20" />
+  </g>
+  
+  <!-- 时钟图案 -->
+  <circle cx="100" cy="70" r="15" fill="none" stroke="#2980b9" stroke-width="2" />
+  <line x1="100" y1="70" x2="100" y2="60" stroke="#2980b9" stroke-width="2" />
+  <line x1="100" y1="70" x2="107" y2="77" stroke="#2980b9" stroke-width="2" />
+</svg>
